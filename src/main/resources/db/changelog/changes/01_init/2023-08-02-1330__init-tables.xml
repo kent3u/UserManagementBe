@@ -1,0 +1,40 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="init-user-table" author="kent">
+        <sql>
+            CREATE TABLE user
+            (
+            id          UUID PRIMARY KEY,
+            username    VARCHAR(64) NOT NULL UNIQUE,
+            password    VARCHAR(80) NOT NULL
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="init-country-table" author="kent">
+        <sql>
+            CREATE TABLE country
+            (
+            iso     CHAR(2) PRIMARY KEY NOT NULL,
+            name    VARCHAR(80) NOT NULL
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="init-client-table" author="kent">
+        <sql>
+            CREATE TABLE client
+            (
+            id              UUID PRIMARY KEY,
+            user_id         UUID NOT NULL REFERENCES user (id),
+            first_name      VARCHAR(64) NOT NULL,
+            last_name       VARCHAR(64) NOT NULL,
+            username        VARCHAR(64) NOT NULL,
+            email           VARCHAR(128),
+            address         VARCHAR(256) NOT NULL,
+            country_iso     CHAR(2) NOT NULL REFERENCES country (iso)
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
